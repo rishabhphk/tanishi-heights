@@ -1,0 +1,868 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tanishi Heights – Tenant Registration</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --primary:      #FF6B35;
+      --primary-dark: #E55527;
+      --secondary:    #004E89;
+      --bg:           #F7F8FA;
+      --surface:      #FFFFFF;
+      --text:         #111827;
+      --muted:        #6B7280;
+      --border:       #E5E7EB;
+      --error:        #DC2626;
+      --success:      #10B981;
+      --radius:       10px;
+      --shadow:       0 1px 3px rgba(0,0,0,0.08), 0 4px 16px rgba(0,0,0,0.06);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ── HEADER ── */
+    header {
+      background: var(--secondary);
+      padding: 18px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo-mark {
+      width: 40px; height: 40px;
+      background: var(--primary);
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px; font-weight: 700; color: white;
+      flex-shrink: 0;
+    }
+
+    .logo-text { color: white; }
+    .logo-text strong { display: block; font-size: 16px; font-weight: 700; line-height: 1.2; }
+    .logo-text span   { font-size: 11px; opacity: 0.7; font-weight: 400; }
+
+    .header-contact {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: white;
+      font-size: 13px;
+      opacity: 0.9;
+      text-decoration: none;
+    }
+    .header-contact:hover { opacity: 1; }
+
+    /* ── HERO STRIP ── */
+    .hero {
+      background: linear-gradient(135deg, var(--secondary) 0%, #003060 100%);
+      padding: 32px 24px 28px;
+      text-align: center;
+      color: white;
+      border-bottom: 3px solid var(--primary);
+    }
+
+    .hero h1 {
+      font-size: clamp(22px, 4vw, 32px);
+      font-weight: 700;
+      margin-bottom: 6px;
+      line-height: 1.2;
+    }
+
+    .hero p {
+      font-size: 14px;
+      opacity: 0.8;
+      margin-bottom: 20px;
+    }
+
+    /* ── TRUST BAR ── */
+    .trust-bar {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px 28px;
+    }
+
+    .trust-item {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 13px;
+      font-weight: 500;
+      opacity: 0.92;
+    }
+
+    .trust-item svg { flex-shrink: 0; }
+
+    /* ── MAIN ── */
+    main {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      padding: 32px 16px 60px;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 680px;
+    }
+
+    /* ── SECTION CARD ── */
+    .card {
+      background: var(--surface);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 28px 28px 24px;
+      margin-bottom: 16px;
+    }
+
+    .section-label {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.7px;
+      color: var(--primary);
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .section-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    /* ── FORM GRID ── */
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .full { grid-column: span 2; }
+
+    .field { display: flex; flex-direction: column; gap: 5px; }
+
+    label {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    label .req { color: var(--error); }
+
+    input, select {
+      width: 100%;
+      padding: 11px 14px;
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      color: var(--text);
+      background: var(--bg);
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      transition: border-color 0.15s, box-shadow 0.15s;
+      outline: none;
+      -webkit-appearance: none;
+      min-width: 0;
+    }
+
+    input[type="date"] { color-scheme: light; cursor: pointer; }
+
+    input:focus, select:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(255,107,53,0.1);
+      background: white;
+    }
+
+    input.err  { border-color: var(--error);   background: #FEF2F2; }
+    input.ok   { border-color: var(--success);  background: #F0FDF4; }
+
+    .hint {
+      font-size: 11px;
+      color: var(--muted);
+      line-height: 1.4;
+    }
+
+    .err-msg {
+      font-size: 11.5px;
+      color: var(--error);
+      display: none;
+      align-items: center;
+      gap: 4px;
+    }
+    .err-msg.show { display: flex; }
+
+    /* phone counter */
+    .phone-wrap { position: relative; }
+    .phone-count {
+      position: absolute;
+      right: 12px; top: 50%;
+      transform: translateY(-50%);
+      font-size: 11px;
+      color: var(--muted);
+      pointer-events: none;
+    }
+    .phone-count.ok  { color: var(--success); font-weight: 600; }
+    .phone-count.bad { color: var(--error);   font-weight: 600; }
+
+    /* ── CONSENT ── */
+    .consent-wrap {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 14px 16px;
+      background: #F0F9FF;
+      border: 1px solid #BAE6FD;
+      border-radius: 8px;
+      margin-bottom: 14px;
+    }
+
+    .consent-wrap input[type="checkbox"] {
+      width: 16px; height: 16px;
+      min-width: 16px;
+      margin-top: 2px;
+      accent-color: var(--primary);
+      cursor: pointer;
+      padding: 0;
+      border: none;
+      background: none;
+      box-shadow: none;
+    }
+
+    .consent-wrap input[type="checkbox"]:focus {
+      box-shadow: none;
+      border: none;
+    }
+
+    #err-consent { display: none; margin-bottom: 12px; }
+    #err-consent.show { display: flex; }
+
+    .consent-wrap label {
+      font-size: 12.5px;
+      font-weight: 400;
+      color: #374151;
+      cursor: pointer;
+      line-height: 1.5;
+    }
+
+    /* ── SUBMIT ERROR ── */
+    .form-error {
+      background: #FEF2F2;
+      border: 1px solid #FECACA;
+      border-left: 3px solid var(--error);
+      border-radius: 8px;
+      padding: 10px 14px;
+      font-size: 13px;
+      color: #991B1B;
+      display: none;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+    .form-error.show { display: flex; }
+
+    /* ── CTA BUTTON ── */
+    .btn-submit {
+      width: 100%;
+      padding: 14px;
+      font-family: 'Inter', sans-serif;
+      font-size: 15px;
+      font-weight: 600;
+      color: white;
+      background: var(--primary);
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.15s, transform 0.1s, box-shadow 0.15s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      box-shadow: 0 2px 8px rgba(255,107,53,0.3);
+    }
+
+    .btn-submit:hover:not(:disabled) {
+      background: var(--primary-dark);
+      box-shadow: 0 4px 14px rgba(255,107,53,0.4);
+    }
+
+    .btn-submit:active:not(:disabled) { transform: scale(0.99); }
+    .btn-submit:disabled { opacity: 0.65; cursor: not-allowed; }
+
+    .spinner {
+      width: 16px; height: 16px;
+      border: 2.5px solid rgba(255,255,255,0.35);
+      border-top-color: white;
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+      display: none;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .privacy-note {
+      text-align: center;
+      font-size: 11.5px;
+      color: var(--muted);
+      margin-top: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+    }
+
+    /* ── SUCCESS ── */
+    #success-panel {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: 16px 0;
+    }
+
+    .success-circle {
+      width: 72px; height: 72px;
+      background: #ECFDF5;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 18px;
+    }
+    .success-circle svg { color: var(--success); }
+
+    #success-panel h2 {
+      font-size: 22px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    #success-panel > p {
+      font-size: 14px;
+      color: var(--muted);
+      max-width: 380px;
+      margin-bottom: 24px;
+      line-height: 1.6;
+    }
+
+    #data-grid {
+      width: 100%;
+      max-width: 500px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 24px;
+      text-align: left;
+    }
+
+    .data-cell {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px 12px;
+    }
+
+    .data-cell.wide { grid-column: span 2; }
+    .data-cell .lbl { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; margin-bottom: 2px; }
+    .data-cell .val { font-size: 13.5px; font-weight: 600; word-break: break-word; }
+
+    .btn-pdf {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 24px;
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      color: white;
+      background: var(--secondary);
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.15s;
+      box-shadow: 0 2px 8px rgba(0,78,137,0.2);
+    }
+    .btn-pdf:hover { background: #003060; }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      padding: 16px 24px;
+      text-align: center;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    footer a { color: var(--primary); text-decoration: none; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 560px) {
+      .card { padding: 20px 16px; }
+      .form-grid { grid-template-columns: 1fr; }
+      .full { grid-column: span 1; }
+      #data-grid { grid-template-columns: 1fr; }
+      .data-cell.wide { grid-column: span 1; }
+      header { justify-content: center; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ===== HEADER ===== -->
+<header>
+  <div class="logo">
+    <div class="logo-mark">T</div>
+    <div class="logo-text">
+      <strong>Tanishi Heights</strong>
+      <span>Premium PG Accommodation</span>
+    </div>
+  </div>
+  <a href="tel:9026308858" class="header-contact">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.15 12 19.79 19.79 0 0 1 1.08 3.32A2 2 0 0 1 3.06 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.09 8.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21 16z"/>
+    </svg>
+    9026308858
+  </a>
+</header>
+
+<!-- ===== HERO ===== -->
+<div class="hero">
+  <h1>Complete Your Tenant Registration</h1>
+  <p>Gali No 3, Sector 104, Hazipur, Noida &nbsp;·&nbsp; Takes less than 2 minutes</p>
+  <div class="trust-bar">
+    <div class="trust-item">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      Secure & Private
+    </div>
+    <div class="trust-item">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      Under 2 Minutes
+    </div>
+    <div class="trust-item">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      Trusted by Tenants
+    </div>
+  </div>
+</div>
+
+<!-- ===== MAIN ===== -->
+<main>
+  <div class="container">
+
+    <div id="form-view">
+
+      <!-- PERSONAL DETAILS -->
+      <div class="card">
+        <div class="section-label">Personal Details</div>
+        <div class="form-grid">
+
+          <div class="field full">
+            <label for="fullName">Full Name (as per Aadhaar) <span class="req">*</span></label>
+            <input type="text" id="fullName" placeholder="e.g. Priya Sharma" autocomplete="name">
+            <span class="err-msg" id="err-fullName">Enter first and last name as on Aadhaar</span>
+          </div>
+
+          <div class="field">
+            <label for="email">Email Address <span class="req">*</span></label>
+            <input type="email" id="email" placeholder="you@gmail.com" autocomplete="email">
+            <span class="err-msg" id="err-email">Enter a valid email address</span>
+          </div>
+
+          <div class="field">
+            <label for="phone">Phone Number <span class="req">*</span></label>
+            <div class="phone-wrap">
+              <input type="tel" id="phone" placeholder="10-digit mobile number" maxlength="10" inputmode="numeric" autocomplete="tel">
+              <span class="phone-count" id="phone-count">0/10</span>
+            </div>
+            <span class="err-msg" id="err-phone">Must be exactly 10 digits</span>
+          </div>
+
+          <div class="field">
+            <label for="aadhaar">Aadhaar / ID Number <span class="req">*</span></label>
+            <input type="text" id="aadhaar" placeholder="Aadhaar / Passport / PAN" maxlength="20">
+            <span class="hint">Aadhaar: 12 digits · Passport: 8 chars · PAN: 10 chars</span>
+            <span class="err-msg" id="err-aadhaar">ID must be at least 8 characters</span>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- STAY DETAILS -->
+      <div class="card">
+        <div class="section-label">Stay Details</div>
+        <div class="form-grid">
+
+          <div class="field">
+            <label for="room">Room Number <span class="req">*</span></label>
+            <input type="text" id="room" placeholder="e.g. 101, 2B">
+            <span class="err-msg" id="err-room">Room number is required</span>
+          </div>
+
+          <div class="field">
+            <label for="checkin">Check-in Date <span class="req">*</span></label>
+            <input type="date" id="checkin">
+            <span class="err-msg" id="err-checkin">Please select a date</span>
+          </div>
+
+          <div class="field">
+            <label for="monthlyRent">Monthly Rent (₹) <span class="req">*</span></label>
+            <input type="number" id="monthlyRent" placeholder="e.g. 6000" min="1" step="1" inputmode="numeric">
+            <span class="err-msg" id="err-monthlyRent">Enter a valid rent amount</span>
+          </div>
+
+          <div class="field">
+            <label for="securityDeposit">Security Deposit (₹) <span class="req">*</span></label>
+            <input type="number" id="securityDeposit" placeholder="Enter 0 if none" min="0" step="1" inputmode="numeric">
+            <span class="err-msg" id="err-securityDeposit">Enter 0 if no deposit</span>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- EMERGENCY CONTACT -->
+      <div class="card">
+        <div class="section-label">Emergency Contact</div>
+        <div class="form-grid">
+
+          <div class="field">
+            <label for="emergencyName">Contact Name <span class="req">*</span></label>
+            <input type="text" id="emergencyName" placeholder="e.g. Rahul Sharma" autocomplete="off">
+            <span class="err-msg" id="err-emergencyName">Enter contact person's name</span>
+          </div>
+
+          <div class="field">
+            <label for="emergencyPhone">Contact Phone <span class="req">*</span></label>
+            <input type="tel" id="emergencyPhone" placeholder="10-digit number" maxlength="10" inputmode="numeric">
+            <span class="err-msg" id="err-emergencyPhone">Enter a valid 10-digit number</span>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- CONSENT + SUBMIT -->
+      <div class="card">
+
+
+        <div class="form-error" id="form-error">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          <span id="error-msg-text">Please fix the errors above.</span>
+        </div>
+
+        <button class="btn-submit" id="submitBtn" type="button">
+          <span id="btnText">Complete Registration</span>
+          <div class="spinner" id="spinner"></div>
+        </button>
+
+        <p class="privacy-note">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          Your data is secure and only shared with Tanishi Heights management.
+        </p>
+      </div>
+
+    </div>
+
+    <!-- SUCCESS PANEL -->
+    <div class="card" id="success-panel">
+      <div class="success-circle">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+      <h2>You're all set! 🎉</h2>
+      <p>Your registration has been received by Tanishi Heights. A confirmation has been sent to your email. Welcome home!</p>
+
+      <div id="data-grid"></div>
+
+      <button class="btn-pdf" id="downloadPdfBtn">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Download Receipt (PDF)
+      </button>
+    </div>
+
+  </div>
+</main>
+
+<!-- ===== FOOTER ===== -->
+<footer>
+  <strong style="color:var(--text)">Tanishi Heights</strong> &nbsp;·&nbsp;
+  Gali No 3, Sector 104, Hazipur, Noida &nbsp;·&nbsp;
+  <a href="tel:9026308858">9026308858</a>
+  <div style="margin-top:4px;">&copy; <span id="year"></span> Tanishi Heights · All rights reserved</div>
+</footer>
+
+<script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  const EJS_PUBLIC_KEY  = 'SViUWl1I_MmvVlrDl';
+  const EJS_SERVICE_ID  = 'service_vpwry9k';
+  const EJS_TEMPLATE_ID = 'template_ecxyqsa';
+  emailjs.init(EJS_PUBLIC_KEY);
+
+  // ── VALIDATION RULES ──────────────────────────────────
+  const emailRx   = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const phoneRx   = /^\d{10}$/;
+  const nameRx    = /^[a-zA-Z\u00C0-\u024F'.-]+(?:\s+[a-zA-Z\u00C0-\u024F'.\s-]+)+$/;
+
+  function validate(id) {
+    const el  = document.getElementById(id);
+    const val = el ? el.value.trim() : '';
+    switch (id) {
+      case 'fullName':        return val.length >= 3 && nameRx.test(val);
+      case 'email':           return emailRx.test(val);
+      case 'phone':           return phoneRx.test(val);
+      case 'aadhaar':         return val.length >= 8;
+      case 'room':            return val.length > 0;
+      case 'checkin':         return val.length > 0;
+      case 'monthlyRent':     return parseFloat(val) > 0;
+      case 'securityDeposit': return val !== '' && !isNaN(parseFloat(val)) && parseFloat(val) >= 0;
+      case 'emergencyName':   return val.length >= 2;
+      case 'emergencyPhone':  return phoneRx.test(val);
+      case 'consent':         return !!document.getElementById('consent').checked;
+      default: return val.length > 0;
+    }
+  }
+
+  function markField(id, force = false) {
+    const ok  = validate(id);
+    const el  = document.getElementById(id);
+    const err = document.getElementById('err-' + id);
+    if (!el) return ok;
+    if (id === 'consent') {
+      if (err) err.classList.toggle('show', !ok && force);
+      return ok;
+    }
+    el.classList.toggle('ok',  ok);
+    el.classList.toggle('err', !ok && (touched[id] || force));
+    if (err) err.classList.toggle('show', !ok && (touched[id] || force));
+    return ok;
+  }
+
+  const fields  = ['fullName','email','phone','aadhaar','room','checkin','monthlyRent','securityDeposit','emergencyName','emergencyPhone'];
+  const touched = {};
+
+  fields.forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    const evt = id === 'consent' ? 'change' : 'blur';
+    el.addEventListener(evt, () => { touched[id] = true; markField(id); });
+    if (id !== 'consent') el.addEventListener('input', () => { if (touched[id]) markField(id); });
+  });
+
+  // phone digit-only + counter
+  ['phone','emergencyPhone'].forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.addEventListener('input', function () {
+      this.value = this.value.replace(/\D/g, '').slice(0, 10);
+      if (id === 'phone') {
+        const c = document.getElementById('phone-count');
+        const n = this.value.length;
+        c.textContent = n + '/10';
+        c.className   = 'phone-count' + (n === 10 ? ' ok' : n > 0 ? ' bad' : '');
+      }
+    });
+  });
+
+  // ── SUBMIT ────────────────────────────────────────────
+  let submittedData = {};
+
+  document.getElementById('submitBtn').addEventListener('click', async function () {
+    const allOk = fields.map(id => markField(id, true)).every(Boolean);
+
+    const errEl  = document.getElementById('form-error');
+    const errTxt = document.getElementById('error-msg-text');
+
+    if (!allOk) {
+      const count = fields.filter(id => !validate(id)).length;
+      errTxt.textContent = count === 1 ? 'Please fix 1 error above.' : `Please fix ${count} errors above.`;
+      errEl.classList.add('show');
+      document.querySelector('.err, input.err')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return;
+    }
+
+    errEl.classList.remove('show');
+
+    const rawRent    = document.getElementById('monthlyRent').value.trim();
+    const rawDeposit = document.getElementById('securityDeposit').value.trim();
+    const rawCheckin = document.getElementById('checkin').value;
+    const [yr, mo, dy] = rawCheckin.split('-');
+    const niceDate   = dy + '/' + mo + '/' + yr;
+    const fmtINR     = v => 'Rs. ' + Number(v).toLocaleString('en-IN');
+    const emergName  = document.getElementById('emergencyName').value.trim();
+    const emergPhone = document.getElementById('emergencyPhone').value.trim();
+
+    submittedData = {
+      from_name:        document.getElementById('fullName').value.trim(),
+      email:            document.getElementById('email').value.trim(),
+      phone:            document.getElementById('phone').value.trim(),
+      aadhaar:          document.getElementById('aadhaar').value.trim(),
+      room:             document.getElementById('room').value.trim(),
+      checkin:          niceDate,
+      emergency:        emergName + ' – ' + emergPhone,
+      monthly_rent:     fmtINR(rawRent),
+      security_deposit: fmtINR(rawDeposit),
+      raw_rent:         rawRent,
+      raw_deposit:      rawDeposit,
+      submitted:        new Date().toLocaleString('en-IN', { dateStyle: 'long', timeStyle: 'short' })
+    };
+
+    const btn     = document.getElementById('submitBtn');
+    const btnText = document.getElementById('btnText');
+    const spinner = document.getElementById('spinner');
+    btn.disabled        = true;
+    btnText.textContent = 'Submitting…';
+    spinner.style.display = 'block';
+
+    try {
+      await emailjs.send(EJS_SERVICE_ID, EJS_TEMPLATE_ID, submittedData);
+      document.getElementById('form-view').style.display    = 'none';
+      document.getElementById('success-panel').style.display = 'flex';
+      populateCard();
+    } catch (err) {
+      console.error(err);
+      errTxt.textContent = 'Could not submit. Please call 9026308858 or try again.';
+      errEl.classList.add('show');
+      btn.disabled        = false;
+      btnText.textContent = 'Complete Registration';
+      spinner.style.display = 'none';
+    }
+  });
+
+  function populateCard() {
+    const rows = [
+      { l: 'Full Name',         v: submittedData.from_name,        w: false },
+      { l: 'Email',             v: submittedData.email,            w: false },
+      { l: 'Phone',             v: submittedData.phone,            w: false },
+      { l: 'Aadhaar / ID',      v: submittedData.aadhaar,          w: false },
+      { l: 'Room',              v: submittedData.room,             w: false },
+      { l: 'Check-in',          v: submittedData.checkin,          w: false },
+      { l: 'Emergency Contact', v: submittedData.emergency,        w: true  },
+      { l: 'Monthly Rent',      v: submittedData.monthly_rent,     w: false },
+      { l: 'Security Deposit',  v: submittedData.security_deposit, w: false },
+      { l: 'Submitted At',      v: submittedData.submitted,        w: true  },
+    ];
+    document.getElementById('data-grid').innerHTML = rows.map(r =>
+      `<div class="data-cell${r.w ? ' wide' : ''}">
+        <div class="lbl">${r.l}</div>
+        <div class="val">${r.v || '—'}</div>
+      </div>`
+    ).join('');
+  }
+
+  // ── PDF ───────────────────────────────────────────────
+  document.getElementById('downloadPdfBtn').addEventListener('click', function () {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF({ unit: 'mm', format: 'a4' });
+    const m   = 20, W = 210;
+    const sf  = (s, sz) => { doc.setFont('helvetica', s); doc.setFontSize(sz); };
+    const fmt = v => 'Rs. ' + Number(v).toLocaleString('en-IN');
+
+    // BG
+    doc.setFillColor(247, 248, 250);
+    doc.rect(0, 0, 210, 297, 'F');
+
+    // Header
+    doc.setFillColor(0, 78, 137);
+    doc.rect(0, 0, 210, 44, 'F');
+    doc.setFillColor(255, 107, 53);
+    doc.rect(0, 44, 210, 3, 'F');
+
+    doc.setTextColor(255,255,255);
+    sf('bold', 22);
+    doc.text('Tanishi Heights', m, 22);
+    sf('normal', 8.5);
+    doc.setTextColor(180,200,220);
+    doc.text('Premium Paying Guest Accommodation', m, 30);
+    doc.text('Gali No 3, Sector 104, Hazipur, Noida · 9026308858', m, 37);
+
+    doc.setTextColor(255,107,53);
+    sf('bold', 10);
+    doc.text('REGISTRATION RECEIPT', W - m, 22, { align: 'right' });
+    sf('normal', 8);
+    doc.setTextColor(180,200,220);
+    doc.text(submittedData.submitted || '', W - m, 30, { align: 'right' });
+
+    // Card
+    let y = 56;
+    doc.setFillColor(255,255,255);
+    doc.roundedRect(m, y, W - m*2, 200, 5, 5, 'F');
+
+    y += 14;
+    sf('bold', 13);
+    doc.setTextColor(17,24,39);
+    doc.text('Tenant Details', m + 10, y);
+    doc.setDrawColor(255,107,53);
+    doc.setLineWidth(0.8);
+    doc.line(m + 10, y + 3, m + 48, y + 3);
+    y += 14;
+
+    const pdfRows = [
+      ['Full Name',         submittedData.from_name],
+      ['Email Address',     submittedData.email],
+      ['Phone Number',      submittedData.phone],
+      ['Aadhaar / ID',      submittedData.aadhaar],
+      ['Room Number',       submittedData.room],
+      ['Check-in Date',     submittedData.checkin],
+      ['Emergency Contact', submittedData.emergency],
+      ['Monthly Rent',      fmt(submittedData.raw_rent)],
+      ['Security Deposit',  fmt(submittedData.raw_deposit)],
+    ];
+
+    pdfRows.forEach(([lbl, val], i) => {
+      if (i % 2 === 0) {
+        doc.setFillColor(247,248,250);
+        doc.rect(m + 6, y - 5, W - m*2 - 12, 13, 'F');
+      }
+      sf('bold', 8);
+      doc.setTextColor(107,114,128);
+      doc.text(lbl.toUpperCase(), m + 10, y + 2);
+      sf('normal', 10);
+      doc.setTextColor(17,24,39);
+      doc.text(val || '—', m + 72, y + 2);
+      y += 13;
+    });
+
+    y += 4;
+    doc.setDrawColor(229,231,235);
+    doc.setLineWidth(0.4);
+    doc.line(m + 10, y, W - m - 10, y);
+    y += 10;
+    sf('normal', 8.5);
+    doc.setTextColor(107,114,128);
+    doc.text('Auto-generated by Tanishi Heights Registration Portal. Please keep for your records.', m + 10, y);
+
+    // Footer
+    doc.setFillColor(0,78,137);
+    doc.rect(0, 278, 210, 19, 'F');
+    sf('normal', 7);
+    doc.setTextColor(160,180,200);
+    doc.text('Tanishi Heights · Gali No 3, Sector 104, Hazipur, Noida · 9026308858', m, 286);
+    doc.text('\u00A9 ' + new Date().getFullYear() + ' Tanishi Heights · All rights reserved', m, 292);
+
+    doc.save('Tanishi_Heights_' + (submittedData.from_name || 'Tenant').replace(/\s+/g,'_') + '.pdf');
+  });
+</script>
+</body>
+</html>
