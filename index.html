@@ -8,240 +8,142 @@
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
-      --primary: #FF6B35;
-      --primary-dark: #E55527;
-      --secondary: #004E89;
-      --bg: #F7F8FA;
-      --surface: #fff;
-      --text: #111827;
-      --muted: #6B7280;
-      --border: #E5E7EB;
-      --error: #DC2626;
-      --success: #10B981;
-      --warning: #F59E0B;
-      --radius: 10px;
-      --shadow: 0 1px 3px rgba(0,0,0,0.08), 0 4px 16px rgba(0,0,0,0.06);
+      --primary: #FF6B35; --primary-dark: #E55527;
+      --secondary: #004E89; --bg: #F7F8FA; --surface: #fff;
+      --text: #111827; --muted: #6B7280; --border: #E5E7EB;
+      --error: #DC2626; --success: #10B981; --warning: #F59E0B;
+      --radius: 10px; --shadow: 0 1px 3px rgba(0,0,0,0.08), 0 4px 16px rgba(0,0,0,0.06);
     }
-    html { scroll-behavior: smooth; }
     body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; display: flex; flex-direction: column; }
 
-    /* HEADER */
-    header {
-      background: var(--secondary);
-      padding: 16px 24px;
-      display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px;
-    }
-    .logo { display: flex; align-items: center; gap: 12px; }
-    .logo-mark { width: 38px; height: 38px; background: var(--primary); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 17px; font-weight: 700; color: white; }
-    .logo-text strong { display: block; font-size: 15px; font-weight: 700; color: white; line-height: 1.2; }
-    .logo-text span { font-size: 11px; color: rgba(255,255,255,0.65); }
-    .header-right { display: flex; align-items: center; gap: 12px; }
-    .btn-admin {
-      padding: 7px 16px; background: rgba(255,255,255,0.12); color: white;
-      border: 1px solid rgba(255,255,255,0.25); border-radius: 7px;
-      font-size: 12px; font-weight: 600; cursor: pointer; transition: background 0.15s;
-      font-family: 'Inter', sans-serif;
-    }
-    .btn-admin:hover { background: rgba(255,255,255,0.2); }
+    header { background: var(--secondary); padding: 15px 24px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; }
+    .logo { display: flex; align-items: center; gap: 11px; }
+    .logo-mark { width: 36px; height: 36px; background: var(--primary); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: 700; color: white; }
+    .logo-text strong { display: block; font-size: 14px; font-weight: 700; color: white; line-height: 1.2; }
+    .logo-text span { font-size: 11px; color: rgba(255,255,255,0.6); }
+    .btn-admin { padding: 7px 15px; background: rgba(255,255,255,0.12); color: white; border: 1px solid rgba(255,255,255,0.25); border-radius: 7px; font-size: 12px; font-weight: 600; cursor: pointer; font-family: 'Inter', sans-serif; transition: background 0.15s; }
+    .btn-admin:hover { background: rgba(255,255,255,0.22); }
 
-    /* HERO */
-    .hero {
-      background: linear-gradient(135deg, var(--secondary) 0%, #003060 100%);
-      padding: 28px 24px 24px; text-align: center; color: white;
-      border-bottom: 3px solid var(--primary);
-    }
-    .hero h1 { font-size: clamp(20px, 3.5vw, 28px); font-weight: 700; margin-bottom: 6px; }
-    .hero p { font-size: 13px; opacity: 0.75; }
+    .hero { background: linear-gradient(135deg, var(--secondary) 0%, #003060 100%); padding: 26px 24px 22px; text-align: center; color: white; border-bottom: 3px solid var(--primary); }
+    .hero h1 { font-size: clamp(18px, 3.5vw, 26px); font-weight: 700; margin-bottom: 5px; }
+    .hero p { font-size: 12.5px; opacity: 0.72; }
 
-    /* MAIN */
-    main { flex: 1; display: flex; justify-content: center; padding: 28px 16px 60px; }
-    .container { width: 100%; max-width: 660px; }
+    main { flex: 1; display: flex; justify-content: center; padding: 24px 14px 50px; }
+    .container { width: 100%; max-width: 640px; }
 
-    /* TABS */
-    .tabs { display: flex; background: var(--surface); border-radius: var(--radius); box-shadow: var(--shadow); margin-bottom: 20px; overflow: hidden; }
-    .tab {
-      flex: 1; padding: 13px; text-align: center; font-size: 13px; font-weight: 600;
-      cursor: pointer; color: var(--muted); border-bottom: 3px solid transparent;
-      transition: all 0.15s; background: none; border-top: none; border-left: none; border-right: none;
-      font-family: 'Inter', sans-serif;
-    }
+    .tabs { display: flex; background: var(--surface); border-radius: var(--radius); box-shadow: var(--shadow); margin-bottom: 18px; overflow: hidden; }
+    .tab { flex: 1; padding: 12px; text-align: center; font-size: 13px; font-weight: 600; cursor: pointer; color: var(--muted); border: none; border-bottom: 3px solid transparent; background: none; font-family: 'Inter', sans-serif; transition: all 0.15s; }
     .tab.active { color: var(--primary); border-bottom-color: var(--primary); background: #FFF8F5; }
 
-    /* CARD */
-    .card { background: var(--surface); border-radius: var(--radius); box-shadow: var(--shadow); padding: 24px; margin-bottom: 16px; }
-    .section-label {
-      font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.7px;
-      color: var(--primary); margin-bottom: 16px; display: flex; align-items: center; gap: 8px;
-    }
-    .section-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+    .card { background: var(--surface); border-radius: var(--radius); box-shadow: var(--shadow); padding: 22px; margin-bottom: 14px; }
+    .sec-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.7px; color: var(--primary); margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
+    .sec-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
 
-    /* FORM */
-    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 13px; }
     .full { grid-column: span 2; }
     .field { display: flex; flex-direction: column; gap: 5px; }
     label { font-size: 12px; font-weight: 600; color: var(--text); }
     label .req { color: var(--error); }
-    input, select, textarea {
-      width: 100%; padding: 10px 13px;
-      font-family: 'Inter', sans-serif; font-size: 13.5px;
-      color: var(--text); background: var(--bg);
-      border: 1.5px solid var(--border); border-radius: 8px;
-      outline: none; transition: border-color 0.15s, box-shadow 0.15s;
-      -webkit-appearance: none; min-width: 0;
-    }
-    textarea { resize: vertical; min-height: 90px; }
-    input:focus, select:focus, textarea:focus {
-      border-color: var(--primary); box-shadow: 0 0 0 3px rgba(255,107,53,0.1); background: white;
-    }
+    input, select, textarea { width: 100%; padding: 10px 12px; font-family: 'Inter', sans-serif; font-size: 13.5px; color: var(--text); background: var(--bg); border: 1.5px solid var(--border); border-radius: 8px; outline: none; transition: border-color 0.15s, box-shadow 0.15s; -webkit-appearance: none; min-width: 0; }
+    textarea { resize: vertical; min-height: 85px; }
+    input:focus, select:focus, textarea:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(255,107,53,0.1); background: white; }
     input.err, select.err, textarea.err { border-color: var(--error); background: #FEF2F2; }
-    .err-msg { font-size: 11px; color: var(--error); display: none; }
+    .err-msg { font-size: 11px; color: var(--error); display: none; margin-top: 1px; }
     .err-msg.show { display: block; }
 
-    /* PRIORITY SELECTOR */
-    .priority-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
-    .priority-btn {
-      padding: 9px 6px; text-align: center; border-radius: 8px;
-      border: 2px solid var(--border); cursor: pointer; font-size: 12px; font-weight: 600;
-      transition: all 0.15s; background: var(--bg); color: var(--muted);
-      font-family: 'Inter', sans-serif;
-    }
-    .priority-btn.low.active   { border-color: var(--success); background: #ECFDF5; color: #065F46; }
-    .priority-btn.medium.active { border-color: var(--warning); background: #FFFBEB; color: #92400E; }
-    .priority-btn.high.active  { border-color: var(--error);   background: #FEF2F2; color: #991B1B; }
+    .priority-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 7px; }
+    .p-btn { padding: 8px 4px; text-align: center; border-radius: 8px; border: 2px solid var(--border); cursor: pointer; font-size: 12px; font-weight: 600; font-family: 'Inter', sans-serif; background: var(--bg); color: var(--muted); transition: all 0.15s; }
+    .p-btn.low.sel   { border-color: var(--success); background: #ECFDF5; color: #065F46; }
+    .p-btn.medium.sel { border-color: var(--warning); background: #FFFBEB; color: #92400E; }
+    .p-btn.high.sel  { border-color: var(--error);   background: #FEF2F2; color: #991B1B; }
 
-    /* SUBMIT */
-    .btn-submit {
-      width: 100%; padding: 13px; font-family: 'Inter', sans-serif;
-      font-size: 14px; font-weight: 600; color: white; background: var(--primary);
-      border: none; border-radius: 8px; cursor: pointer;
-      transition: background 0.15s, box-shadow 0.15s;
-      box-shadow: 0 2px 8px rgba(255,107,53,0.3);
-    }
+    .btn-submit { width: 100%; padding: 13px; font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 600; color: white; background: var(--primary); border: none; border-radius: 8px; cursor: pointer; transition: background 0.15s; box-shadow: 0 2px 8px rgba(255,107,53,0.3); }
     .btn-submit:hover { background: var(--primary-dark); }
-    .btn-submit:disabled { opacity: 0.6; cursor: not-allowed; }
 
-    /* SUCCESS TOAST */
-    .toast {
-      position: fixed; top: 20px; right: 20px; z-index: 999;
-      background: white; border-left: 4px solid var(--success);
-      border-radius: 10px; padding: 14px 18px;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.12);
-      display: none; align-items: flex-start; gap: 12px;
-      max-width: 320px; animation: slideIn 0.3s ease;
-    }
-    .toast.show { display: flex; }
-    @keyframes slideIn { from { opacity: 0; transform: translateX(40px); } to { opacity: 1; transform: translateX(0); } }
-    .toast-icon { color: var(--success); flex-shrink: 0; margin-top: 1px; }
-    .toast-title { font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 3px; }
-    .toast-msg { font-size: 12px; color: var(--muted); line-height: 1.4; }
-    .toast-ticket { font-size: 13px; font-weight: 700; color: var(--primary); margin-top: 4px; }
+    /* TOAST */
+    .toast { position: fixed; top: 18px; right: 18px; z-index: 999; background: white; border-left: 4px solid var(--success); border-radius: 10px; padding: 14px 16px; box-shadow: 0 8px 24px rgba(0,0,0,0.13); display: none; align-items: flex-start; gap: 11px; max-width: 300px; }
+    .toast.show { display: flex; animation: tIn 0.3s ease; }
+    @keyframes tIn { from { opacity:0; transform: translateX(30px); } to { opacity:1; transform: translateX(0); } }
+    .t-title { font-size: 13px; font-weight: 700; margin-bottom: 2px; }
+    .t-msg   { font-size: 11.5px; color: var(--muted); line-height: 1.4; }
+    .t-ticket { font-size: 13px; font-weight: 700; color: var(--primary); margin-top: 4px; }
 
     /* TRACKER */
     #tracker-view { display: none; }
-    .tracker-input-wrap { display: flex; gap: 10px; }
-    .tracker-input-wrap input { flex: 1; }
-    .btn-track {
-      padding: 10px 18px; background: var(--secondary); color: white;
-      border: none; border-radius: 8px; font-size: 13px; font-weight: 600;
-      cursor: pointer; font-family: 'Inter', sans-serif; white-space: nowrap;
-      transition: background 0.15s;
-    }
+    .track-row { display: flex; gap: 9px; }
+    .track-row input { flex: 1; }
+    .btn-track { padding: 10px 16px; background: var(--secondary); color: white; border: none; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; font-family: 'Inter', sans-serif; white-space: nowrap; }
     .btn-track:hover { background: #003060; }
 
-    /* TICKET CARD */
-    .ticket-card {
-      background: var(--bg); border: 1px solid var(--border);
-      border-radius: var(--radius); padding: 18px; margin-top: 16px;
-      display: none;
-    }
-    .ticket-card.show { display: block; }
-    .ticket-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; margin-bottom: 14px; flex-wrap: wrap; }
-    .ticket-id { font-size: 13px; font-weight: 700; color: var(--secondary); }
-    .ticket-date { font-size: 11px; color: var(--muted); margin-top: 2px; }
+    .ticket-box { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; margin-top: 14px; display: none; }
+    .ticket-box.show { display: block; }
+    .tk-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; margin-bottom: 12px; flex-wrap: wrap; }
+    .tk-id   { font-size: 13px; font-weight: 700; color: var(--secondary); }
+    .tk-date { font-size: 11px; color: var(--muted); margin-top: 2px; }
 
-    .status-badge {
-      padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: 700;
-      text-transform: uppercase; letter-spacing: 0.5px;
-    }
-    .status-open     { background: #FEF2F2; color: #991B1B; border: 1px solid #FECACA; }
-    .status-progress { background: #FFFBEB; color: #92400E; border: 1px solid #FDE68A; }
-    .status-resolved { background: #ECFDF5; color: #065F46; border: 1px solid #A7F3D0; }
+    .badge { padding: 3px 11px; border-radius: 20px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.4px; }
+    .b-open     { background: #FEF2F2; color: #991B1B; border: 1px solid #FECACA; }
+    .b-progress { background: #FFFBEB; color: #92400E; border: 1px solid #FDE68A; }
+    .b-resolved { background: #ECFDF5; color: #065F46; border: 1px solid #A7F3D0; }
 
-    .ticket-row { display: flex; gap: 8px; margin-bottom: 8px; font-size: 13px; }
-    .ticket-row .lbl { color: var(--muted); min-width: 120px; font-weight: 500; }
-    .ticket-row .val { font-weight: 600; color: var(--text); }
+    .tk-row { display: flex; gap: 8px; margin-bottom: 7px; font-size: 12.5px; }
+    .tk-row .l { color: var(--muted); min-width: 110px; font-weight: 500; }
+    .tk-row .v { font-weight: 600; }
 
-    .priority-tag {
-      display: inline-block; padding: 2px 10px; border-radius: 20px;
-      font-size: 11px; font-weight: 700; text-transform: uppercase;
-    }
-    .p-low    { background: #ECFDF5; color: #065F46; }
-    .p-medium { background: #FFFBEB; color: #92400E; }
-    .p-high   { background: #FEF2F2; color: #991B1B; }
+    .ptag { display: inline-block; padding: 2px 9px; border-radius: 20px; font-size: 11px; font-weight: 700; text-transform: uppercase; }
+    .pt-low    { background: #ECFDF5; color: #065F46; }
+    .pt-medium { background: #FFFBEB; color: #92400E; }
+    .pt-high   { background: #FEF2F2; color: #991B1B; }
 
-    .timeline { margin-top: 14px; border-top: 1px solid var(--border); padding-top: 14px; }
-    .timeline-title { font-size: 11px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px; }
-    .tl-item { display: flex; gap: 10px; margin-bottom: 10px; }
-    .tl-dot { width: 8px; height: 8px; border-radius: 50%; margin-top: 5px; flex-shrink: 0; }
+    .tl { margin-top: 12px; border-top: 1px solid var(--border); padding-top: 12px; }
+    .tl-title { font-size: 10.5px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 9px; }
+    .tl-item { display: flex; gap: 9px; margin-bottom: 8px; }
+    .tl-dot { width: 8px; height: 8px; border-radius: 50%; margin-top: 4px; flex-shrink: 0; }
     .tl-dot.done { background: var(--success); }
-    .tl-dot.pending { background: var(--border); }
-    .tl-text { font-size: 12px; color: var(--text); font-weight: 500; }
+    .tl-dot.pend { background: var(--border); }
+    .tl-text { font-size: 12px; font-weight: 500; }
     .tl-sub  { font-size: 11px; color: var(--muted); }
 
-    .not-found { text-align: center; padding: 28px; color: var(--muted); font-size: 13px; }
+    .not-found { text-align: center; padding: 24px; color: var(--muted); font-size: 13px; display: none; }
 
     /* ADMIN */
     #admin-view { display: none; }
-    .admin-login { max-width: 340px; margin: 0 auto; }
-    .complaints-list { display: flex; flex-direction: column; gap: 12px; }
-    .complaint-item {
-      background: var(--bg); border: 1px solid var(--border);
-      border-radius: var(--radius); padding: 16px;
-    }
-    .complaint-item-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; flex-wrap: wrap; gap: 8px; }
-    .complaint-item-id { font-size: 12px; font-weight: 700; color: var(--secondary); }
-    .complaint-item-name { font-size: 13px; font-weight: 600; }
-    .complaint-item-cat { font-size: 12px; color: var(--muted); }
-    .complaint-item-desc { font-size: 12.5px; color: var(--text); margin: 8px 0; line-height: 1.5; background: white; padding: 8px 10px; border-radius: 6px; border: 1px solid var(--border); }
+    .stats-bar { display: grid; grid-template-columns: repeat(3,1fr); gap: 9px; margin-bottom: 14px; }
+    .stat { background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 11px; text-align: center; }
+    .stat-n { font-size: 22px; font-weight: 700; }
+    .stat-l { font-size: 11px; color: var(--muted); font-weight: 500; }
 
-    .status-select {
-      padding: 5px 10px; border-radius: 7px; font-size: 12px; font-weight: 600;
-      border: 1.5px solid var(--border); cursor: pointer; background: white;
-      font-family: 'Inter', sans-serif; color: var(--text);
-    }
-    .btn-update {
-      padding: 5px 14px; background: var(--secondary); color: white;
-      border: none; border-radius: 7px; font-size: 12px; font-weight: 600;
-      cursor: pointer; font-family: 'Inter', sans-serif;
-    }
-    .empty-state { text-align: center; padding: 40px; color: var(--muted); }
-    .stats-bar { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 16px; }
-    .stat-box { background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 12px; text-align: center; }
-    .stat-num { font-size: 22px; font-weight: 700; color: var(--secondary); }
-    .stat-lbl { font-size: 11px; color: var(--muted); font-weight: 500; }
+    .c-item { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px; margin-bottom: 10px; }
+    .c-head { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 8px; flex-wrap: wrap; gap: 6px; }
+    .c-id   { font-size: 11.5px; font-weight: 700; color: var(--secondary); }
+    .c-name { font-size: 13px; font-weight: 600; }
+    .c-cat  { font-size: 12px; color: var(--muted); margin-top: 1px; }
+    .c-desc { font-size: 12px; color: var(--text); background: white; padding: 8px 10px; border-radius: 6px; border: 1px solid var(--border); margin: 8px 0; line-height: 1.5; }
+    .c-actions { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+    .st-sel { padding: 5px 9px; border-radius: 7px; font-size: 12px; font-weight: 600; border: 1.5px solid var(--border); cursor: pointer; background: white; font-family: 'Inter', sans-serif; }
+    .btn-upd { padding: 5px 13px; background: var(--secondary); color: white; border: none; border-radius: 7px; font-size: 12px; font-weight: 600; cursor: pointer; font-family: 'Inter', sans-serif; }
+    .empty { text-align: center; padding: 36px; color: var(--muted); font-size: 13px; }
 
-    /* FOOTER */
-    footer { background: var(--surface); border-top: 1px solid var(--border); padding: 14px 24px; text-align: center; font-size: 12px; color: var(--muted); }
+    footer { background: var(--surface); border-top: 1px solid var(--border); padding: 13px 24px; text-align: center; font-size: 12px; color: var(--muted); }
     footer a { color: var(--primary); text-decoration: none; }
 
-    @media (max-width: 520px) {
+    @media (max-width: 500px) {
       .form-grid { grid-template-columns: 1fr; }
       .full { grid-column: span 1; }
-      .priority-grid { grid-template-columns: repeat(3,1fr); }
-      .stats-bar { grid-template-columns: repeat(3,1fr); }
     }
   </style>
 </head>
 <body>
 
+<!-- TOAST -->
 <div class="toast" id="toast">
-  <div class="toast-icon">
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+  <div style="color:var(--success);flex-shrink:0;margin-top:2px;">
+    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
   </div>
   <div>
-    <div class="toast-title">Complaint Submitted!</div>
-    <div class="toast-msg">Your complaint has been registered.</div>
-    <div class="toast-ticket" id="toast-ticket"></div>
+    <div class="t-title">Complaint Submitted!</div>
+    <div class="t-msg">Save your ticket number to track status.</div>
+    <div class="t-ticket" id="toast-ticket"></div>
   </div>
 </div>
 
@@ -253,204 +155,185 @@
       <span>Complaint Register</span>
     </div>
   </div>
-  <div class="header-right">
-    <a href="tel:9026308858" style="color:rgba(255,255,255,0.8);font-size:13px;text-decoration:none;display:flex;align-items:center;gap:5px;">
-      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.15 12 19.79 19.79 0 0 1 1.08 3.32A2 2 0 0 1 3.06 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.09 8.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21 16z"/></svg>
-      9026308858
-    </a>
-    <button class="btn-admin" onclick="showAdmin()">Admin Panel</button>
-  </div>
+  <button class="btn-admin" onclick="showAdmin()">🔒 Admin Panel</button>
 </header>
 
 <div class="hero">
   <h1>Report a Complaint</h1>
-  <p>Gali No 3, Sector 104, Hazipur, Noida &nbsp;·&nbsp; We resolve issues within 24–48 hours</p>
+  <p>Gali No 3, Sector 104, Hazipur, Noida &nbsp;·&nbsp; Resolved within 24–48 hours</p>
 </div>
 
 <main>
-  <div class="container">
+<div class="container">
 
-    <!-- TABS -->
-    <div class="tabs">
-      <button class="tab active" onclick="switchTab('submit')">📝 Submit Complaint</button>
-      <button class="tab" onclick="switchTab('tracker')">🔍 Track Complaint</button>
-    </div>
-
-    <!-- SUBMIT VIEW -->
-    <div id="submit-view">
-      <div class="card">
-        <div class="section-label">Your Details</div>
-        <div class="form-grid">
-          <div class="field">
-            <label>Full Name <span class="req">*</span></label>
-            <input type="text" id="c-name" placeholder="e.g. Priya Sharma">
-            <span class="err-msg" id="err-c-name">Name is required</span>
-          </div>
-          <div class="field">
-            <label>Room Number <span class="req">*</span></label>
-            <input type="text" id="c-room" placeholder="e.g. 101, 2B">
-            <span class="err-msg" id="err-c-room">Room number is required</span>
-          </div>
-          <div class="field">
-            <label>Phone Number <span class="req">*</span></label>
-            <input type="tel" id="c-phone" placeholder="10-digit number" maxlength="10" inputmode="numeric">
-            <span class="err-msg" id="err-c-phone">Enter valid 10-digit number</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="section-label">Complaint Details</div>
-        <div class="form-grid">
-          <div class="field">
-            <label>Category <span class="req">*</span></label>
-            <select id="c-category">
-              <option value="">Select category</option>
-              <option>💧 Water Issue</option>
-              <option>⚡ Electricity Issue</option>
-              <option>📶 WiFi / Internet</option>
-              <option>🚿 Bathroom / Washroom</option>
-              <option>🪟 Room / Furniture</option>
-              <option>🧹 Cleanliness</option>
-              <option>🔒 Security</option>
-              <option>🍽️ Food / Kitchen</option>
-              <option>🔊 Noise Complaint</option>
-              <option>🛠️ Maintenance</option>
-              <option>Other</option>
-            </select>
-            <span class="err-msg" id="err-c-category">Please select a category</span>
-          </div>
-          <div class="field">
-            <label>Priority</label>
-            <div class="priority-grid">
-              <button class="priority-btn low active" onclick="setPriority('low', this)">🟢 Low</button>
-              <button class="priority-btn medium" onclick="setPriority('medium', this)">🟡 Medium</button>
-              <button class="priority-btn high" onclick="setPriority('high', this)">🔴 High</button>
-            </div>
-          </div>
-          <div class="field full">
-            <label>Describe the Issue <span class="req">*</span></label>
-            <textarea id="c-desc" placeholder="Please describe your complaint in detail..."></textarea>
-            <span class="err-msg" id="err-c-desc">Please describe the issue</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="card" style="padding:20px 24px;">
-        <div id="submit-form-error" style="background:#FEF2F2;border:1px solid #FECACA;border-left:3px solid var(--error);border-radius:8px;padding:10px 14px;font-size:13px;color:#991B1B;display:none;margin-bottom:12px;">
-          Please fill all required fields.
-        </div>
-        <button class="btn-submit" id="submitComplaintBtn" onclick="submitComplaint()">
-          Submit Complaint
-        </button>
-        <p style="text-align:center;font-size:11.5px;color:var(--muted);margin-top:10px;">
-          You'll receive a ticket number to track your complaint status
-        </p>
-      </div>
-    </div>
-
-    <!-- TRACKER VIEW -->
-    <div id="tracker-view">
-      <div class="card">
-        <div class="section-label">Track Your Complaint</div>
-        <div class="tracker-input-wrap">
-          <input type="text" id="track-input" placeholder="Enter ticket number e.g. TH-20240001" style="text-transform:uppercase;">
-          <button class="btn-track" onclick="trackComplaint()">Track</button>
-        </div>
-        <div class="ticket-card" id="ticket-result"></div>
-        <div class="not-found" id="not-found" style="display:none;">
-          ❌ No complaint found with this ticket number. Please check and try again.
-        </div>
-      </div>
-    </div>
-
-    <!-- ADMIN VIEW -->
-    <div id="admin-view">
-      <div class="card admin-login" id="admin-login-card">
-        <div class="section-label">Admin Login</div>
-        <div class="field" style="margin-bottom:12px;">
-          <label>Password</label>
-          <input type="password" id="admin-pass" placeholder="Enter admin password" onkeydown="if(event.key==='Enter')adminLogin()">
-        </div>
-        <button class="btn-submit" onclick="adminLogin()">Login</button>
-        <p style="text-align:center;font-size:11px;color:var(--muted);margin-top:8px;">Default password: admin123</p>
-      </div>
-
-      <div id="admin-panel" style="display:none;">
-        <div class="card">
-          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:8px;">
-            <div class="section-label" style="margin:0;">All Complaints</div>
-            <button onclick="adminLogout()" style="font-size:12px;color:var(--muted);background:none;border:none;cursor:pointer;font-family:'Inter',sans-serif;">Logout</button>
-          </div>
-          <div class="stats-bar" id="stats-bar"></div>
-          <div class="complaints-list" id="complaints-list"></div>
-        </div>
-      </div>
-    </div>
-
+  <!-- TABS -->
+  <div class="tabs">
+    <button class="tab active" id="tab-submit"  onclick="switchTab('submit')">📝 Submit Complaint</button>
+    <button class="tab"        id="tab-tracker" onclick="switchTab('tracker')">🔍 Track Complaint</button>
   </div>
+
+  <!-- SUBMIT -->
+  <div id="submit-view">
+    <div class="card">
+      <div class="sec-label">Your Details</div>
+      <div class="form-grid">
+        <div class="field">
+          <label>Full Name <span class="req">*</span></label>
+          <input type="text" id="c-name" placeholder="e.g. Priya Sharma">
+          <span class="err-msg" id="err-c-name">Name is required</span>
+        </div>
+        <div class="field">
+          <label>Room Number <span class="req">*</span></label>
+          <input type="text" id="c-room" placeholder="e.g. 101">
+          <span class="err-msg" id="err-c-room">Room number required</span>
+        </div>
+        <div class="field">
+          <label>Phone Number <span class="req">*</span></label>
+          <input type="tel" id="c-phone" placeholder="10-digit number" maxlength="10" inputmode="numeric">
+          <span class="err-msg" id="err-c-phone">Enter valid 10-digit number</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="sec-label">Complaint Details</div>
+      <div class="form-grid">
+        <div class="field">
+          <label>Category <span class="req">*</span></label>
+          <select id="c-cat">
+            <option value="">Select category</option>
+            <option>💧 Water Issue</option>
+            <option>⚡ Electricity Issue</option>
+            <option>📶 WiFi / Internet</option>
+            <option>🚿 Bathroom / Washroom</option>
+            <option>🪟 Room / Furniture</option>
+            <option>🧹 Cleanliness</option>
+            <option>🔒 Security</option>
+            <option>🍽️ Food / Kitchen</option>
+            <option>🔊 Noise Complaint</option>
+            <option>🛠️ Maintenance</option>
+            <option>Other</option>
+          </select>
+          <span class="err-msg" id="err-c-cat">Please select a category</span>
+        </div>
+        <div class="field">
+          <label>Priority</label>
+          <div class="priority-grid">
+            <button class="p-btn low sel" onclick="selPriority('low',this)">🟢 Low</button>
+            <button class="p-btn medium"  onclick="selPriority('medium',this)">🟡 Medium</button>
+            <button class="p-btn high"    onclick="selPriority('high',this)">🔴 High</button>
+          </div>
+        </div>
+        <div class="field full">
+          <label>Describe the Issue <span class="req">*</span></label>
+          <textarea id="c-desc" placeholder="Please describe your issue in detail (min 10 characters)..."></textarea>
+          <span class="err-msg" id="err-c-desc">Please describe the issue (min 10 chars)</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="padding:18px 22px;">
+      <div id="form-err" style="display:none;background:#FEF2F2;border:1px solid #FECACA;border-left:3px solid var(--error);border-radius:8px;padding:9px 13px;font-size:13px;color:#991B1B;margin-bottom:11px;">
+        Please fill all required fields correctly.
+      </div>
+      <button class="btn-submit" onclick="submitComplaint()">Submit Complaint →</button>
+      <p style="text-align:center;font-size:11px;color:var(--muted);margin-top:9px;">You'll get a ticket number to track your complaint</p>
+    </div>
+  </div>
+
+  <!-- TRACKER -->
+  <div id="tracker-view">
+    <div class="card">
+      <div class="sec-label">Track Your Complaint</div>
+      <div class="track-row">
+        <input type="text" id="track-input" placeholder="Enter ticket e.g. TH-20240001" style="text-transform:uppercase" oninput="this.value=this.value.toUpperCase()">
+        <button class="btn-track" onclick="trackComplaint()">Track →</button>
+      </div>
+      <div class="not-found" id="not-found">❌ No complaint found. Please check the ticket number.</div>
+      <div class="ticket-box" id="ticket-box"></div>
+    </div>
+  </div>
+
+  <!-- ADMIN -->
+  <div id="admin-view">
+    <div class="card" id="login-card">
+      <div class="sec-label">Admin Login</div>
+      <div class="field" style="margin-bottom:11px;">
+        <label>Password</label>
+        <input type="password" id="admin-pass" placeholder="Enter password" onkeydown="if(event.key==='Enter')doLogin()">
+        <span class="err-msg" id="err-login">Incorrect password</span>
+      </div>
+      <button class="btn-submit" onclick="doLogin()">Login to Admin Panel</button>
+      <p style="text-align:center;font-size:11px;color:var(--muted);margin-top:8px;">Password: admin123</p>
+    </div>
+
+    <div id="admin-panel" style="display:none;">
+      <div class="card">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+          <div class="sec-label" style="margin:0;flex:1;">All Complaints</div>
+          <button onclick="doLogout()" style="font-size:12px;color:var(--muted);background:none;border:none;cursor:pointer;font-family:'Inter',sans-serif;">Logout</button>
+        </div>
+        <div class="stats-bar" id="stats"></div>
+        <div id="c-list"></div>
+      </div>
+    </div>
+  </div>
+
+</div>
 </main>
 
 <footer>
-  <strong style="color:var(--text)">Tanishi Heights</strong> &nbsp;·&nbsp;
-  Gali No 3, Sector 104, Hazipur, Noida &nbsp;·&nbsp;
-  <a href="tel:9026308858">9026308858</a>
-  <div style="margin-top:4px;">&copy; <span id="year"></span> Tanishi Heights · All rights reserved</div>
+  <strong style="color:var(--text)">Tanishi Heights</strong> &nbsp;·&nbsp; Gali No 3, Sector 104, Hazipur, Noida &nbsp;·&nbsp; <a href="tel:9026308858">9026308858</a>
+  <div style="margin-top:3px;">&copy; <span id="year"></span> Tanishi Heights · All rights reserved</div>
 </footer>
 
 <script>
   document.getElementById('year').textContent = new Date().getFullYear();
 
-  let selectedPriority = 'low';
-  const ADMIN_PASS = 'admin123';
+  // ── IN-MEMORY STORE (works everywhere) ───────────────
+  let DB = [];
+  let selPri = 'low';
 
-  // ── STORAGE ──────────────────────────────────────────
-  function getComplaints() {
-    try { return JSON.parse(localStorage.getItem('th_complaints') || '[]'); } catch { return []; }
-  }
-  function saveComplaints(arr) {
-    localStorage.setItem('th_complaints', JSON.stringify(arr));
+  function genId() {
+    return 'TH-' + new Date().getFullYear() + String(DB.length + 1).padStart(4,'0');
   }
 
-  // ── TICKET ID ────────────────────────────────────────
-  function genTicket() {
+  function now() {
     const d = new Date();
-    const yr = d.getFullYear();
-    const complaints = getComplaints();
-    const num = String(complaints.length + 1).padStart(4, '0');
-    return `TH-${yr}${num}`;
+    return {
+      date: d.toLocaleDateString('en-IN', { day:'2-digit', month:'short', year:'numeric' }),
+      time: d.toLocaleTimeString('en-IN', { hour:'2-digit', minute:'2-digit' }),
+      full: d.toLocaleString('en-IN')
+    };
   }
 
   // ── PRIORITY ─────────────────────────────────────────
-  function setPriority(p, el) {
-    selectedPriority = p;
-    document.querySelectorAll('.priority-btn').forEach(b => b.classList.remove('active'));
-    el.classList.add('active');
+  function selPriority(p, el) {
+    selPri = p;
+    document.querySelectorAll('.p-btn').forEach(b => b.classList.remove('sel'));
+    el.classList.add('sel');
   }
 
   // ── TABS ─────────────────────────────────────────────
-  function switchTab(tab) {
-    document.getElementById('submit-view').style.display  = tab === 'submit'  ? 'block' : 'none';
-    document.getElementById('tracker-view').style.display = tab === 'tracker' ? 'block' : 'none';
+  function switchTab(t) {
+    document.getElementById('submit-view').style.display  = t==='submit'  ? 'block' : 'none';
+    document.getElementById('tracker-view').style.display = t==='tracker' ? 'block' : 'none';
     document.getElementById('admin-view').style.display   = 'none';
-    document.querySelectorAll('.tab').forEach((t, i) => {
-      t.classList.toggle('active', (tab === 'submit' && i === 0) || (tab === 'tracker' && i === 1));
-    });
+    document.getElementById('tab-submit').classList.toggle('active',  t==='submit');
+    document.getElementById('tab-tracker').classList.toggle('active', t==='tracker');
   }
 
   function showAdmin() {
-    document.getElementById('submit-view').style.display  = 'none';
-    document.getElementById('tracker-view').style.display = 'none';
-    document.getElementById('admin-view').style.display   = 'block';
+    ['submit-view','tracker-view'].forEach(id => document.getElementById(id).style.display='none');
+    document.getElementById('admin-view').style.display = 'block';
     document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
   }
 
   // ── VALIDATE ─────────────────────────────────────────
-  function req(id, errId, check) {
-    const ok = check();
+  function chk(id, errId, fn) {
+    const ok = fn();
     document.getElementById(id)?.classList.toggle('err', !ok);
-    const e = document.getElementById(errId);
-    if (e) e.classList.toggle('show', !ok);
+    document.getElementById(errId)?.classList.toggle('show', !ok);
     return ok;
   }
 
@@ -459,182 +342,161 @@
     const name  = document.getElementById('c-name').value.trim();
     const room  = document.getElementById('c-room').value.trim();
     const phone = document.getElementById('c-phone').value.trim();
-    const cat   = document.getElementById('c-category').value;
+    const cat   = document.getElementById('c-cat').value;
     const desc  = document.getElementById('c-desc').value.trim();
 
-    const v1 = req('c-name',     'err-c-name',     () => name.length >= 2);
-    const v2 = req('c-room',     'err-c-room',     () => room.length > 0);
-    const v3 = req('c-phone',    'err-c-phone',    () => /^\d{10}$/.test(phone));
-    const v4 = req('c-category', 'err-c-category', () => cat !== '');
-    const v5 = req('c-desc',     'err-c-desc',     () => desc.length >= 10);
+    const ok = [
+      chk('c-name', 'err-c-name', () => name.length >= 2),
+      chk('c-room', 'err-c-room', () => room.length > 0),
+      chk('c-phone','err-c-phone',() => /^\d{10}$/.test(phone)),
+      chk('c-cat',  'err-c-cat',  () => cat !== ''),
+      chk('c-desc', 'err-c-desc', () => desc.length >= 10)
+    ].every(Boolean);
 
-    const errEl = document.getElementById('submit-form-error');
-    if (!v1 || !v2 || !v3 || !v4 || !v5) { errEl.style.display = 'block'; return; }
-    errEl.style.display = 'none';
+    document.getElementById('form-err').style.display = ok ? 'none' : 'block';
+    if (!ok) return;
 
-    const ticket = genTicket();
-    const now    = new Date();
+    const t = now();
     const complaint = {
-      id:       ticket,
-      name, room, phone, category: cat,
-      desc, priority: selectedPriority,
-      status:   'open',
-      date:     now.toLocaleDateString('en-IN', { day:'2-digit', month:'short', year:'numeric' }),
-      time:     now.toLocaleTimeString('en-IN', { hour:'2-digit', minute:'2-digit' }),
-      timestamp: now.getTime(),
-      timeline: [{ label: 'Complaint Submitted', time: now.toLocaleString('en-IN'), done: true }]
+      id: genId(), name, room, phone,
+      category: cat, priority: selPri, desc,
+      status: 'open',
+      date: t.date, time: t.time,
+      timeline: [{ label: 'Complaint Submitted', time: t.full, done: true }]
     };
 
-    const all = getComplaints();
-    all.push(complaint);
-    saveComplaints(all);
+    DB.push(complaint);
 
-    // show toast
-    document.getElementById('toast-ticket').textContent = 'Ticket: ' + ticket;
+    // toast
+    document.getElementById('toast-ticket').textContent = 'Ticket No: ' + complaint.id;
     const toast = document.getElementById('toast');
     toast.classList.add('show');
-    setTimeout(() => toast.classList.remove('show'), 5000);
+    setTimeout(() => toast.classList.remove('show'), 6000);
 
-    // reset form
-    ['c-name','c-room','c-phone','c-desc'].forEach(id => document.getElementById(id).value = '');
-    document.getElementById('c-category').value = '';
-    selectedPriority = 'low';
-    document.querySelectorAll('.priority-btn').forEach(b => b.classList.remove('active'));
-    document.querySelector('.priority-btn.low').classList.add('active');
+    // reset
+    ['c-name','c-room','c-phone','c-desc'].forEach(id => document.getElementById(id).value='');
+    document.getElementById('c-cat').value = '';
+    selPri = 'low';
+    document.querySelectorAll('.p-btn').forEach(b => b.classList.remove('sel'));
+    document.querySelector('.p-btn.low').classList.add('sel');
 
-    // switch to tracker and show result
+    // go to tracker
     switchTab('tracker');
-    document.getElementById('track-input').value = ticket;
+    document.getElementById('track-input').value = complaint.id;
     trackComplaint();
   }
 
   // ── TRACK ────────────────────────────────────────────
   function trackComplaint() {
     const input = document.getElementById('track-input').value.trim().toUpperCase();
-    const all   = getComplaints();
-    const c     = all.find(x => x.id === input);
-    const resultEl   = document.getElementById('ticket-result');
-    const notFoundEl = document.getElementById('not-found');
+    const c = DB.find(x => x.id === input);
+    const box = document.getElementById('ticket-box');
+    const nf  = document.getElementById('not-found');
 
-    if (!c) {
-      resultEl.classList.remove('show');
-      notFoundEl.style.display = 'block';
-      return;
-    }
+    if (!c) { box.classList.remove('show'); nf.style.display='block'; return; }
+    nf.style.display = 'none';
 
-    notFoundEl.style.display = 'none';
+    const sc = { open:'b-open', 'in-progress':'b-progress', resolved:'b-resolved' }[c.status] || 'b-open';
+    const sl = { open:'Open', 'in-progress':'In Progress', resolved:'Resolved' }[c.status] || 'Open';
+    const pc = { low:'pt-low', medium:'pt-medium', high:'pt-high' }[c.priority] || 'pt-low';
+    const pl = { low:'🟢 Low', medium:'🟡 Medium', high:'🔴 High' }[c.priority] || 'Low';
 
-    const statusClass = { open: 'status-open', 'in-progress': 'status-progress', resolved: 'status-resolved' }[c.status] || 'status-open';
-    const statusLabel = { open: 'Open', 'in-progress': 'In Progress', resolved: 'Resolved' }[c.status] || 'Open';
-    const priorityClass = { low: 'p-low', medium: 'p-medium', high: 'p-high' }[c.priority] || 'p-low';
-    const priorityLabel = { low: '🟢 Low', medium: '🟡 Medium', high: '🔴 High' }[c.priority] || 'Low';
-
-    const tl = (c.timeline || []).map(t => `
-      <div class="tl-item">
-        <div class="tl-dot ${t.done ? 'done' : 'pending'}"></div>
+    const tl = (c.timeline||[]).map(t =>
+      `<div class="tl-item">
+        <div class="tl-dot ${t.done?'done':'pend'}"></div>
         <div><div class="tl-text">${t.label}</div><div class="tl-sub">${t.time}</div></div>
       </div>`).join('');
 
-    resultEl.innerHTML = `
-      <div class="ticket-header">
-        <div>
-          <div class="ticket-id">${c.id}</div>
-          <div class="ticket-date">${c.date} at ${c.time}</div>
-        </div>
-        <span class="status-badge ${statusClass}">${statusLabel}</span>
+    box.innerHTML = `
+      <div class="tk-head">
+        <div><div class="tk-id">${c.id}</div><div class="tk-date">${c.date} at ${c.time}</div></div>
+        <span class="badge ${sc}">${sl}</span>
       </div>
-      <div class="ticket-row"><span class="lbl">Name</span><span class="val">${c.name}</span></div>
-      <div class="ticket-row"><span class="lbl">Room</span><span class="val">${c.room}</span></div>
-      <div class="ticket-row"><span class="lbl">Category</span><span class="val">${c.category}</span></div>
-      <div class="ticket-row"><span class="lbl">Priority</span><span class="val"><span class="priority-tag ${priorityClass}">${priorityLabel}</span></span></div>
-      <div class="ticket-row"><span class="lbl">Description</span><span class="val">${c.desc}</span></div>
-      <div class="timeline">
-        <div class="timeline-title">Timeline</div>
-        ${tl}
-      </div>`;
-
-    resultEl.classList.add('show');
+      <div class="tk-row"><span class="l">Name</span><span class="v">${c.name}</span></div>
+      <div class="tk-row"><span class="l">Room</span><span class="v">${c.room}</span></div>
+      <div class="tk-row"><span class="l">Category</span><span class="v">${c.category}</span></div>
+      <div class="tk-row"><span class="l">Priority</span><span class="v"><span class="ptag ${pc}">${pl}</span></span></div>
+      <div class="tk-row"><span class="l">Description</span><span class="v">${c.desc}</span></div>
+      <div class="tl"><div class="tl-title">Timeline</div>${tl}</div>`;
+    box.classList.add('show');
   }
 
-  // ── ADMIN ────────────────────────────────────────────
-  function adminLogin() {
+  // ── ADMIN ─────────────────────────────────────────────
+  function doLogin() {
     const pass = document.getElementById('admin-pass').value;
-    if (pass !== ADMIN_PASS) { alert('Wrong password'); return; }
-    document.getElementById('admin-login-card').style.display = 'none';
-    document.getElementById('admin-panel').style.display = 'block';
+    if (pass !== 'admin123') {
+      document.getElementById('admin-pass').classList.add('err');
+      document.getElementById('err-login').classList.add('show');
+      return;
+    }
+    document.getElementById('login-card').style.display   = 'none';
+    document.getElementById('admin-panel').style.display  = 'block';
     renderAdmin();
   }
 
-  function adminLogout() {
-    document.getElementById('admin-login-card').style.display = 'block';
+  function doLogout() {
+    document.getElementById('login-card').style.display  = 'block';
     document.getElementById('admin-panel').style.display = 'none';
     document.getElementById('admin-pass').value = '';
+    document.getElementById('admin-pass').classList.remove('err');
+    document.getElementById('err-login').classList.remove('show');
     switchTab('submit');
   }
 
   function renderAdmin() {
-    const all  = getComplaints().sort((a, b) => b.timestamp - a.timestamp);
-    const open = all.filter(c => c.status === 'open').length;
-    const prog = all.filter(c => c.status === 'in-progress').length;
-    const res  = all.filter(c => c.status === 'resolved').length;
+    const open = DB.filter(c=>c.status==='open').length;
+    const prog = DB.filter(c=>c.status==='in-progress').length;
+    const res  = DB.filter(c=>c.status==='resolved').length;
 
-    document.getElementById('stats-bar').innerHTML = `
-      <div class="stat-box"><div class="stat-num" style="color:var(--error)">${open}</div><div class="stat-lbl">Open</div></div>
-      <div class="stat-box"><div class="stat-num" style="color:var(--warning)">${prog}</div><div class="stat-lbl">In Progress</div></div>
-      <div class="stat-box"><div class="stat-num" style="color:var(--success)">${res}</div><div class="stat-lbl">Resolved</div></div>`;
+    document.getElementById('stats').innerHTML = `
+      <div class="stat"><div class="stat-n" style="color:var(--error)">${open}</div><div class="stat-l">Open</div></div>
+      <div class="stat"><div class="stat-n" style="color:var(--warning)">${prog}</div><div class="stat-l">In Progress</div></div>
+      <div class="stat"><div class="stat-n" style="color:var(--success)">${res}</div><div class="stat-l">Resolved</div></div>`;
 
-    if (!all.length) {
-      document.getElementById('complaints-list').innerHTML = '<div class="empty-state">No complaints yet 🎉</div>';
+    if (!DB.length) {
+      document.getElementById('c-list').innerHTML = '<div class="empty">No complaints yet 🎉</div>';
       return;
     }
 
-    const priorityLabel = { low: '🟢 Low', medium: '🟡 Medium', high: '🔴 High' };
-    const priorityClass = { low: 'p-low', medium: 'p-medium', high: 'p-high' };
+    const pl = { low:'🟢 Low', medium:'🟡 Medium', high:'🔴 High' };
+    const pc = { low:'pt-low', medium:'pt-medium', high:'pt-high' };
 
-    document.getElementById('complaints-list').innerHTML = all.map(c => `
-      <div class="complaint-item">
-        <div class="complaint-item-header">
+    document.getElementById('c-list').innerHTML = [...DB].reverse().map(c => `
+      <div class="c-item">
+        <div class="c-head">
           <div>
-            <div class="complaint-item-id">${c.id} &nbsp;·&nbsp; ${c.date}</div>
-            <div class="complaint-item-name">${c.name} &nbsp;–&nbsp; Room ${c.room} &nbsp;·&nbsp; 📞 ${c.phone}</div>
-            <div class="complaint-item-cat">${c.category} &nbsp;·&nbsp; <span class="priority-tag ${priorityClass[c.priority]}">${priorityLabel[c.priority]}</span></div>
+            <div class="c-id">${c.id} · ${c.date} at ${c.time}</div>
+            <div class="c-name">${c.name} — Room ${c.room} · 📞 ${c.phone}</div>
+            <div class="c-cat">${c.category} · <span class="ptag ${pc[c.priority]}">${pl[c.priority]}</span></div>
           </div>
         </div>
-        <div class="complaint-item-desc">${c.desc}</div>
-        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
-          <select class="status-select" id="sel-${c.id}">
-            <option value="open"        ${c.status==='open'        ?'selected':''}>🔴 Open</option>
-            <option value="in-progress" ${c.status==='in-progress' ?'selected':''}>🟡 In Progress</option>
-            <option value="resolved"    ${c.status==='resolved'    ?'selected':''}>🟢 Resolved</option>
+        <div class="c-desc">${c.desc}</div>
+        <div class="c-actions">
+          <select class="st-sel" id="sel-${c.id}">
+            <option value="open"        ${c.status==='open'?'selected':''}>🔴 Open</option>
+            <option value="in-progress" ${c.status==='in-progress'?'selected':''}>🟡 In Progress</option>
+            <option value="resolved"    ${c.status==='resolved'?'selected':''}>🟢 Resolved</option>
           </select>
-          <button class="btn-update" onclick="updateStatus('${c.id}')">Update Status</button>
+          <button class="btn-upd" onclick="updateStatus('${c.id}')">Update Status</button>
         </div>
       </div>`).join('');
   }
 
   function updateStatus(id) {
-    const newStatus = document.getElementById('sel-' + id).value;
-    const all = getComplaints();
-    const idx = all.findIndex(c => c.id === id);
-    if (idx === -1) return;
-    all[idx].status = newStatus;
-
-    const labels = { 'in-progress': 'Marked as In Progress', resolved: 'Marked as Resolved' };
-    if (labels[newStatus]) {
-      all[idx].timeline = all[idx].timeline || [];
-      const alreadyAdded = all[idx].timeline.some(t => t.label === labels[newStatus]);
-      if (!alreadyAdded) {
-        all[idx].timeline.push({ label: labels[newStatus], time: new Date().toLocaleString('en-IN'), done: true });
-      }
+    const ns  = document.getElementById('sel-'+id).value;
+    const idx = DB.findIndex(c=>c.id===id);
+    if (idx===-1) return;
+    DB[idx].status = ns;
+    const labels = { 'in-progress':'Marked as In Progress', resolved:'Marked as Resolved' };
+    if (labels[ns] && !DB[idx].timeline.some(t=>t.label===labels[ns])) {
+      DB[idx].timeline.push({ label: labels[ns], time: new Date().toLocaleString('en-IN'), done: true });
     }
-
-    saveComplaints(all);
     renderAdmin();
   }
 
-  // phone digit only
-  document.getElementById('c-phone').addEventListener('input', function () {
-    this.value = this.value.replace(/\D/g, '').slice(0, 10);
+  // phone digits only
+  document.getElementById('c-phone').addEventListener('input', function(){
+    this.value = this.value.replace(/\D/g,'').slice(0,10);
   });
 </script>
 </body>
