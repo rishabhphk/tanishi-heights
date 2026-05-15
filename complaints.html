@@ -381,14 +381,11 @@
     all.push({ ...complaint, timeline: [{ label: 'Complaint Submitted', time: ts, done: true }] });
     save(all);
 
-    // save to Google Sheets
+    // save to Google Sheets via form submission (bypasses CORS)
     try {
-      await fetch(GS_URL, {
-        method: 'POST',
-        mode: 'no-cors',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(complaint)
-      });
+      const form = new FormData();
+      form.append('data', JSON.stringify(complaint));
+      await fetch(GS_URL, { method: 'POST', mode: 'no-cors', body: form });
     } catch(e) { console.warn('Sheet save failed', e); }
 
     btn.disabled = false;
