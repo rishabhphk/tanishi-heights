@@ -271,7 +271,6 @@
         <span class="emsg" id="err-pass">Incorrect password. Try again.</span>
       </div>
       <button class="btn-main" onclick="doLogin()">Login to Admin Panel</button>
-      <p style="text-align:center;font-size:11px;color:var(--muted);margin-top:8px;">Default password: <strong>admin123</strong></p>
     </div>
     <div id="apanel" style="display:none;">
       <div class="card">
@@ -296,8 +295,9 @@
 <script>
   document.getElementById('yr').textContent = new Date().getFullYear();
 
-  const PASS = 'admin123';
-  const KEY  = 'th_complaints_v2';
+  const PASS    = 'admin123';
+  const KEY     = 'th_complaints_v2';
+  const GS_URL  = 'https://script.google.com/macros/s/AKfycbz4TaS5ne4waJqfxsheaBzDeBvlyV7R1gpyczXVG99J_wivSpPJgAG08WEvnxQ2aWKO/exec';
   let curPri = 'low';
 
   /* ── STORAGE ── */
@@ -350,7 +350,7 @@
   }
 
   /* ── SUBMIT ── */
-  function submitComplaint() {
+  async function submitComplaint() {
     const name  = document.getElementById('c-name').value.trim();
     const room  = document.getElementById('c-room').value.trim();
     const phone = document.getElementById('c-phone').value.trim();
@@ -368,23 +368,35 @@
     document.getElementById('ferr').style.display = ok ? 'none' : 'block';
     if (!ok) return;
 
-    const id = genId();
-    const ts = nowStr();
-    const complaint = {
-      id, name, room, phone, category: cat,
-      priority: curPri, desc, status: 'open',
-      date: ts,
-      timeline: [{ label: 'Complaint Submitted', time: ts, done: true }]
-    };
+    const btn = document.querySelector('#form-section .btn-main');
+    btn.disabled = true;
+    btn.textContent = 'Submitting…';
 
+    const id = 'TH-' + Date.now();
+    const ts = nowStr();
+    const complaint = { id, name, room, phone, category: cat, priority: curPri, desc, status: 'open', date: ts };
+
+    // save to localStorage as backup
     const all = load();
-    all.push(complaint);
+    all.push({ ...complaint, timeline: [{ label: 'Complaint Submitted', time: ts, done: true }] });
     save(all);
 
-    /* show success screen */
-    document.getElementById('form-section').style.display    = 'none';
-    document.getElementById('success-screen').style.display  = 'block';
-    document.getElementById('ticket-display').textContent    = id;
+    // save to Google Sheets
+    try {
+      await fetch(GS_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(complaint)
+      });
+    } catch(e) { console.warn('Sheet save failed', e); }
+
+    btn.disabled = false;
+    btn.textContent = 'Submit Complaint →';
+
+    document.getElementById('form-section').style.display   = 'none';
+    document.getElementById('success-screen').style.display = 'block';
+    document.getElementById('ticket-display').textContent   = id;
   }
 
   function goTrack() {
